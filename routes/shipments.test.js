@@ -47,4 +47,18 @@ describe("POST /", function () {
     expect(resp.body).toEqual({ shipped: 5000 });
   });
 
+  test("invalid", async function () {
+    const resp = await request(app).post("/shipments").send({
+      productId: "1000",
+      name: "Test Tester",
+      addr: "100 Test St",
+      zip: "12345-6789",
+    });
+
+    expect(resp.statusCode).toEqual(400);
+    expect(resp.body.error.message).toEqual([
+      "instance.productId is not of a type(s) integer"
+    ]);
+  });
+
 });
